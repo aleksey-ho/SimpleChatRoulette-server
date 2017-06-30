@@ -17,7 +17,8 @@ import java.util.List;
 
 public class ChatServer extends WebSocketServer {
 
-    private static final int port = 8887;
+    private static String host = "0.0.0.0";
+    private static int port = 8887;
     private static final String apiKey = "45899912";
     private static final String apiSecret = "4f33680959ea7c211faa7606be0559e565c312e9";
     private static OpenTok opentok;
@@ -38,6 +39,8 @@ public class ChatServer extends WebSocketServer {
 
     public static void main(String[] args) throws InterruptedException , IOException {
         opentok = new OpenTok(Integer.parseInt(apiKey), apiSecret);
+        port = Integer.parseInt(System.getenv("PORT"));
+        System.out.println("Heroku port: " + port);
         ChatServer s = new ChatServer(port);
         s.start();
         System.out.println("ChatServer started on port: " + s.getPort());
