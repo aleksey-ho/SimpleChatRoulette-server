@@ -36,6 +36,13 @@ public class ChatServer extends WebSocketServer {
         super(address);
     }
 
+    public static void main(String[] args) throws InterruptedException , IOException {
+        opentok = new OpenTok(Integer.parseInt(apiKey), apiSecret);
+        ChatServer s = new ChatServer(port);
+        s.start();
+        System.out.println("ChatServer started on port: " + s.getPort());
+    }
+
     @Override
     public void onOpen(WebSocket connection, ClientHandshake handshake) {
         System.out.println(connection.getRemoteSocketAddress().getAddress().getHostAddress() + " entered the room");
@@ -70,18 +77,6 @@ public class ChatServer extends WebSocketServer {
     @Override
     public void onFragment(WebSocket conn, Framedata fragment) {
         System.out.println("Fragment received: " + fragment);
-    }
-
-    public static void main(String[] args) throws InterruptedException , IOException {
-        if (apiKey == null || apiKey.isEmpty() || apiSecret == null || apiSecret.isEmpty()) {
-            System.out.println("You must define API_KEY and API_SECRET system properties in the build.gradle file.");
-            System.exit(-1);
-        }
-        opentok = new OpenTok(Integer.parseInt(apiKey), apiSecret);
-
-        ChatServer s = new ChatServer(port);
-        s.start();
-        System.out.println("ChatServer started on port: " + s.getPort());
     }
 
     @Override
